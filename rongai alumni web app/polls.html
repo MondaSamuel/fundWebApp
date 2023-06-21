@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+    <title>Data Display</title>
+    <style>
+        #dataContainer{
+            display: flex;
+            margin: 40px auto 0 auto;
+            max-width: 1400px;
+            
+            
+        }
+        .item {
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            padding: 10px;
+            width: 400px;
+            padding: 1.5rem;
+            margin: 50px;
+            font-family: sans-serif;
+            border-radius: 20px;
+            box-shadow: 0 0 20px rgba(0,0,0.15);
+            flex: 1;
+            
+
+        }
+        .title{
+        font-weight: bold;
+         font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .vote-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+            
+        }
+        
+        .vote-button {
+            padding: 5px 10px;
+            cursor: pointer;
+            border: 1px solid #ccc;
+            background-color:green;
+            border-radius: 50px;
+        }
+        
+        .vote-button.active {
+            background-color: #6fbf73;
+            color: #fff;
+            border-color: #6fbf73;
+        }
+        .back
+        {
+            border-color: 1px solid #ccc;
+            color: #fff;
+            margin-top: 20px;
+            box-shadow:black;
+            background-color: darkgreen;
+            padding: 10px;
+            border-radius: 10px;
+            font-weight: bold;
+            margin-bottom: 25 px;
+        }
+    </style>
+</head>
+<body>
+    <div id="dataContainer" ></div>
+    <script>
+        fetch('http://109.123.254.230:9070/polls/all')
+            .then(response => response.json())
+            .then(data => {
+                const dataContainer = document.getElementById('dataContainer');
+                data.forEach(item => {
+                    const itemElement = document.createElement('div');
+                    itemElement.classList.add('item');
+                    itemElement.innerHTML = `
+                     <div>
+                        <h3>${item.title}</h3>
+                        <p>${item.description}</p>
+                        <p>Date Created: ${item.date_created}</p>
+                        <p>Category: ${item.category}</p>
+                        <div class="vote-buttons">
+                            <div class="vote-button" onclick="castVote(${item.id}, 'yes')">Yes</div>
+                            <div class="vote-button" onclick="castVote(${item.id}, 'no')">No</div>
+                        </div>
+                    </div>
+                    `;
+                    dataContainer.appendChild(itemElement);
+                });
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+            
+        function castVote(itemId, voteValue) {
+            // Implement your logic to cast a vote here
+            console.log(`Casting vote for item ${itemId}: ${voteValue}`);
+        }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js" integrity="sha384-fbbOQedDUMZZ5KreZpsbe1LCZPVmfTnH7ois6mU1QK+m14rQ1l2bGBq41eYeM/fS" crossorigin="anonymous"></script>
+</body>
+</html>
